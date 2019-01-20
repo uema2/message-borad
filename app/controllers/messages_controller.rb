@@ -1,7 +1,7 @@
 class MessagesController < ApplicationController
   before_action :set_message, only: [:show, :edit, :update, :destroy]
   def index
-    @messages = Message.all
+    @messages = Message.order(created_at: :desc).page(params[:page]).per(3)
   end
   
   def show
@@ -26,13 +26,13 @@ class MessagesController < ApplicationController
   def edit
   end
   
-  def updete
+  def update
     
     if @message.update(message_params)
-      flash[:success] = "Message は正常に更新されました"
+      flash[:success] = 'Message は正常に更新されました'
       redirect_to @message
     else
-      flash.now[:danger] = "Message は更新されませんでした"
+      flash.now[:danger] = 'Message は更新されませんでした'
       render :edit
     end 
   end
@@ -40,7 +40,7 @@ class MessagesController < ApplicationController
   def destroy
     @message.destroy
     
-    flash[:success] = "Message は正常に削除されました"
+    flash[:success] = 'Message は正常に削除されました'
     redirect_to messages_url
   end
   
